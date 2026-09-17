@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Termômetro do Mercado — Praia Digital</title>
+<meta name="description" content="Está quente ou frio? Medidor do momento do mercado imobiliário do litoral paulista por cidade.">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+  body{background:#f0f9ff;color:#0f172a;min-height:100vh}
+  header{background:linear-gradient(135deg,#0077B6,#00B4D8);color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+  header a{color:#fff;text-decoration:none;font-weight:700}.logo{font-size:1.2rem}
+  main{max-width:720px;margin:2rem auto;padding:0 1rem}
+  .card{background:#fff;border-radius:16px;padding:1.75rem;box-shadow:0 4px 24px rgba(0,60,100,.08)}
+  h1{font-size:1.5rem;color:#0077B6}.sub{color:#64748b;margin:.3rem 0 1.2rem;font-size:.95rem}
+  .cidade{margin-bottom:1rem}
+  .top{display:flex;justify-content:space-between;align-items:center;font-weight:600;margin-bottom:.3rem}
+  .termo{height:22px;background:#e2e8f0;border-radius:99px;overflow:hidden;position:relative}
+  .termo div{height:100%;border-radius:99px;transition:width .6s}
+  .temp{font-size:.8rem;font-weight:800}
+  .quente{color:#dc2626}.morno{color:#d97706}.frio{color:#2563eb}
+  .legenda{display:flex;gap:1rem;font-size:.8rem;color:#64748b;margin-top:1rem;flex-wrap:wrap}
+  .bol{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.3rem}
+  .dica{margin-top:1.2rem;background:#ecfeff;border:1px solid #67e8f9;border-radius:12px;padding:1rem;font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="https://praia.digital/">🏖️ Praia Digital</a>
+  <a href="https://praia.digital/guia-litoral">← Guia do Litoral</a>
+</header>
+<main>
+  <div class="card">
+    <h1>🌡️ Termômetro do Mercado</h1>
+    <p class="sub">Temperatura = valorização + liquidez + demanda de temporada. Atualizado pela equipe Praia Digital.</p>
+    <div id="lista"></div>
+    <div class="legenda">
+      <span><span class="bol" style="background:#dc2626"></span>Quente — demanda alta, negocie rápido</span>
+      <span><span class="bol" style="background:#d97706"></span>Morno — equilíbrio</span>
+      <span><span class="bol" style="background:#2563eb"></span>Frio — bom para compradores</span>
+    </div>
+    <div class="dica">🏆 Detalhes no <a href="https://praia.digital/guia-litoral/ranking-cidades/" style="color:#0077B6;font-weight:700">Ranking de Cidades</a> · ⚖️ <a href="https://praia.digital/guia-litoral/comparador-cidades/" style="color:#0077B6;font-weight:700">Comparador</a></div>
+  </div>
+</main>
+<script>
+var dados=[
+  {n:'Bertioga',t:92,obs:'Valorização de 14,5%/ano — Riviera puxa o mercado'},
+  {n:'Praia Grande',t:88,obs:'Liquidez máxima, absorção rápida de lançamentos'},
+  {n:'Guarujá',t:80,obs:'Demanda de temporada forte o ano todo'},
+  {n:'Peruíbe',t:74,obs:'Frontier — compradores antecipando valorização'},
+  {n:'Santos',t:68,obs:'Mercado local estável, pouco especulativo'},
+  {n:'Mongaguá',t:58,obs:'Aquecendo com novos empreendimentos'},
+  {n:'São Vicente',t:52,obs:'Estável, boa para moradia'},
+  {n:'Itanhaém',t:48,obs:'Frio — janela de oportunidade para negociar'}
+];
+document.getElementById('lista').innerHTML=dados.map(function(c){
+  var cls=c.t>=75?'quente':c.t>=55?'morno':'frio';
+  var cor=c.t>=75?'#dc2626':c.t>=55?'#d97706':'#2563eb';
+  var emoji=c.t>=75?'🔥':c.t>=55?'🌤️':'❄️';
+  return '<div class="cidade"><div class="top"><span>'+emoji+' '+c.n+'</span><span class="temp '+cls+'">'+c.t+'°</span></div><div class="termo"><div style="width:'+c.t+'%;background:'+cor+'"></div></div><small style="color:#64748b;font-size:.8rem">'+c.obs+'</small></div>';
+}).join('');
+</script>
+</body>
+</html>
