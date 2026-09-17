@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparador de Cidades do Litoral — Praia Digital</title>
+<meta name="description" content="Compare preço por m², valorização e perfil de investimento das cidades do litoral paulista.">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+  body{background:#f0f9ff;color:#0f172a;min-height:100vh}
+  header{background:linear-gradient(135deg,#0077B6,#00B4D8);color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+  header a{color:#fff;text-decoration:none;font-weight:700}.logo{font-size:1.2rem}
+  main{max-width:860px;margin:2rem auto;padding:0 1rem}
+  .card{background:#fff;border-radius:16px;padding:1.75rem;box-shadow:0 4px 24px rgba(0,60,100,.08)}
+  h1{font-size:1.5rem;color:#0077B6}.sub{color:#64748b;margin:.3rem 0 1.25rem;font-size:.95rem}
+  .sel{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  @media(max-width:600px){.sel{grid-template-columns:1fr}}
+  select{width:100%;padding:.7rem;border:1px solid #cbd5e1;border-radius:10px;font-size:1rem}
+  table{width:100%;border-collapse:collapse;margin-top:1.4rem;font-size:.92rem}
+  th,td{padding:.65rem .5rem;border-bottom:1px solid #e2e8f0;text-align:left}
+  th{color:#0077B6;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+  td:last-child,th:last-child{text-align:right}
+  .win{color:#166534;font-weight:800}
+  .dica{margin-top:1.2rem;background:#ecfeff;border:1px solid #67e8f9;border-radius:12px;padding:1rem;font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="https://praia.digital/">🏖️ Praia Digital</a>
+  <a href="https://praia.digital/guia-litoral">← Guia do Litoral</a>
+</header>
+<main>
+  <div class="card">
+    <h1>⚖️ Comparador de Cidades</h1>
+    <p class="sub">Escolha duas cidades e compare os indicadores lado a lado.</p>
+    <div class="sel">
+      <select id="c1"></select>
+      <select id="c2"></select>
+    </div>
+    <table>
+      <tr><th>Indicador</th><th id="h1"></th><th id="h2"></th></tr>
+      <tr><td>Preço médio (R$/m²)</td><td id="a1"></td><td id="a2"></td></tr>
+      <tr><td>Valorização anual</td><td id="b1"></td><td id="b2"></td></tr>
+      <tr><td>Diária média temporada</td><td id="d1"></td><td id="d2"></td></tr>
+      <tr><td>Ocupação média anual</td><td id="e1"></td><td id="e2"></td></tr>
+      <tr><td>Perfil</td><td id="f1"></td><td id="f2"></td></tr>
+    </table>
+    <div class="dica">💡 Achou a cidade ideal? Estime o valor de um imóvel no <a href="https://praia.digital/avaliador-imoveis" style="color:#0077B6;font-weight:700">Avaliador IA</a> e simule o retorno no <a href="https://praia.digital/simulador-roi" style="color:#0077B6;font-weight:700">Simulador ROI</a>.</div>
+  </div>
+</main>
+<script>
+var dados={
+  'Santos':{m2:6200,val:'9,2%',diaria:480,oc:'62%',perfil:'Urbano, forte mercado local'},
+  'Guarujá':{m2:7500,val:'11,4%',diaria:550,oc:'58%',perfil:'Turismo consolidado'},
+  'Praia Grande':{m2:5400,val:'13,1%',diaria:400,oc:'60%',perfil:'Maior liquidez, entrada acessível'},
+  'São Vicente':{m2:5800,val:'8,7%',diaria:420,oc:'52%',perfil:'Valorização estável'},
+  'Bertioga':{m2:6800,val:'14,5%',diaria:520,oc:'48%',perfil:'Casas e condomínios, alto potencial'},
+  'Mongaguá':{m2:4700,val:'10,2%',diaria:350,oc:'50%',perfil:'Entrada barata, turismo popular'},
+  'Itanhaém':{m2:4400,val:'9,8%',diaria:330,oc:'47%',perfil:'Emergente, margem de crescimento'},
+  'Peruíbe':{m2:4200,val:'12,6%',diaria:320,oc:'45%',perfil:'Frontier de valorização'}
+};
+var s1=document.getElementById('c1'), s2=document.getElementById('c2');
+Object.keys(dados).forEach(function(c){
+  s1.add(new Option(c,c)); s2.add(new Option(c,c));
+});
+s2.selectedIndex=1;
+function cmp(){
+  var a=dados[s1.value], b=dados[s2.value];
+  document.getElementById('h1').textContent=s1.value; document.getElementById('h2').textContent=s2.value;
+  var rows=[['a','m2',function(d){return 'R$ '+d.m2.toLocaleString('pt-BR')},function(x,y){return x.m2>y.m2}],['b','val',function(d){return d.val},function(x,y){return parseFloat(x.val)>parseFloat(y.val)}],['d','diaria',function(d){return 'R$ '+d.diaria},function(x,y){return x.diaria>y.diaria}],['e','oc',function(d){return d.oc},function(x,y){return parseFloat(x.oc)>parseFloat(y.oc)}]];
+  rows.forEach(function(r){
+    var e1=document.getElementById(r[0]+'1'), e2=document.getElementById(r[0]+'2');
+    e1.textContent=r[2](a); e2.textContent=r[2](b);
+    e1.className=r[3](a,b)?'win':''; e2.className=r[3](b,a)?'win':'';
+  });
+  document.getElementById('f1').textContent=a.perfil; document.getElementById('f2').textContent=b.perfil;
+}
+s1.onchange=cmp; s2.onchange=cmp; cmp();
+</script>
+</body>
+</html>
