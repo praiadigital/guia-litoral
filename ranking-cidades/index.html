@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ranking das Cidades do Litoral — Praia Digital</title>
+<meta name="description" content="Ranking interativo das cidades do litoral paulista por custo, valorização e retorno de temporada.">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+  body{background:#f0f9ff;color:#0f172a;min-height:100vh}
+  header{background:linear-gradient(135deg,#0077B6,#00B4D8);color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+  header a{color:#fff;text-decoration:none;font-weight:700}.logo{font-size:1.2rem}
+  main{max-width:720px;margin:2rem auto;padding:0 1rem}
+  .card{background:#fff;border-radius:16px;padding:1.75rem;box-shadow:0 4px 24px rgba(0,60,100,.08)}
+  h1{font-size:1.5rem;color:#0077B6}.sub{color:#64748b;margin:.3rem 0 1.2rem;font-size:.95rem}
+  .tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem}
+  .tab{padding:.6rem 1rem;border:1px solid #cbd5e1;background:#fff;border-radius:999px;font-weight:700;cursor:pointer;font-size:.85rem}
+  .tab.active{background:#0077B6;color:#fff;border-color:#0077B6}
+  .rank{display:flex;align-items:center;gap:.8rem;padding:.7rem .8rem;border-radius:12px;margin-bottom:.5rem;background:#f8fafc;border:1px solid #e2e8f0}
+  .rank:hover{border-color:#0077B6}
+  .pos{font-size:1.2rem;font-weight:800;color:#0077B6;width:32px;text-align:center}
+  .nome{flex:1;font-weight:600}
+  .nome small{display:block;color:#64748b;font-weight:400}
+  .val{font-weight:800;white-space:nowrap}
+  .dica{margin-top:1.2rem;background:#ecfeff;border:1px solid #67e8f9;border-radius:12px;padding:1rem;font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="https://praia.digital/">🏖️ Praia Digital</a>
+  <a href="https://praia.digital/guia-litoral">← Guia do Litoral</a>
+</header>
+<main>
+  <div class="card">
+    <h1>🏆 Ranking das Cidades do Litoral</h1>
+    <p class="sub">Ordene por diferentes critérios e descubra onde investir.</p>
+    <div class="tabs">
+      <button class="tab active" onclick="ord('val',this)">📈 Valorização</button>
+      <button class="tab" onclick="ord('diaria',this)">💰 Maior diária</button>
+      <button class="tab" onclick="ord('oc',this)">🛏️ Ocupação</button>
+      <button class="tab" onclick="ord('acessivel',this)">🎯 Mais acessível</button>
+    </div>
+    <div id="lista"></div>
+    <div class="dica">⚖️ Compare duas cidades em detalhe no <a href="https://praia.digital/guia-litoral/comparador-cidades/" style="color:#0077B6;font-weight:700">Comparador</a> · 📈 Projete ganhos na <a href="https://praia.digital/avaliador-imoveis/projecao-valorizacao/" style="color:#0077B6;font-weight:700">Projeção de Valorização</a></div>
+  </div>
+</main>
+<script>
+var dados=[
+  {n:'Bertioga',m2:6800,val:14.5,diaria:520,oc:48,perfil:'Casas e condomínios'},
+  {n:'Praia Grande',m2:5400,val:13.1,diaria:400,oc:60,perfil:'Maior liquidez'},
+  {n:'Peruíbe',m2:4200,val:12.6,diaria:320,oc:45,perfil:'Frontier de valorização'},
+  {n:'Guarujá',m2:7500,val:11.4,diaria:550,oc:58,perfil:'Turismo consolidado'},
+  {n:'Mongaguá',m2:4700,val:10.2,diaria:350,oc:50,perfil:'Entrada barata'},
+  {n:'Itanhaém',m2:4400,val:9.8,diaria:330,oc:47,perfil:'Emergente'},
+  {n:'Santos',m2:6200,val:9.2,diaria:480,oc:62,perfil:'Mercado local forte'},
+  {n:'São Vicente',m2:5800,val:8.7,diaria:420,oc:52,perfil:'Estável'}
+];
+function ord(k,btn){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+  btn.classList.add('active');
+  var arr=dados.slice();
+  if(k==='acessivel') arr.sort(function(a,b){return a.m2-b.m2});
+  else arr.sort(function(a,b){return b[k]-a[k]});
+  document.getElementById('lista').innerHTML=arr.map(function(c,i){
+    var metrica=k==='val'?c.val.toFixed(1)+'%/ano':k==='diaria'?'R$ '+c.diaria+'/noite':k==='oc'?c.oc+'% ocupação':'R$ '+c.m2.toLocaleString('pt-BR')+'/m²';
+    var medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'º';
+    return '<div class="rank"><span class="pos">'+medal+'</span><span class="nome">'+c.n+'<small>'+c.perfil+'</small></span><span class="val">'+metrica+'</span></div>';
+  }).join('');
+}
+ord('val',document.querySelector('.tab'));
+</script>
+</body>
+</html>
