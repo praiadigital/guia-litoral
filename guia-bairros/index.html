@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Bairros do Litoral — Praia Digital</title>
+<meta name="description" content="Explore os principais bairros do litoral paulista: perfil, preço por m² e para quem é ideal.">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+  body{background:#f0f9ff;color:#0f172a;min-height:100vh}
+  header{background:linear-gradient(135deg,#0077B6,#00B4D8);color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+  header a{color:#fff;text-decoration:none;font-weight:700}.logo{font-size:1.2rem}
+  main{max-width:760px;margin:2rem auto;padding:0 1rem}
+  .card{background:#fff;border-radius:16px;padding:1.75rem;box-shadow:0 4px 24px rgba(0,60,100,.08)}
+  h1{font-size:1.5rem;color:#0077B6}.sub{color:#64748b;margin:.3rem 0 1.2rem;font-size:.95rem}
+  label{font-weight:600;font-size:.85rem;display:block;margin-bottom:.3rem}
+  select{width:100%;padding:.7rem;border:1px solid #cbd5e1;border-radius:10px;font-size:1rem}
+  .bairro{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:1.1rem 1.2rem;margin-top:.9rem}
+  .bairro h3{color:#0077B6;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem;font-size:1.05rem}
+  .m2{font-weight:800;color:#166534;white-space:nowrap}
+  .bairro p{font-size:.9rem;color:#475569;margin:.35rem 0}
+  .tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.4rem}
+  .tag{background:#e0f2fe;color:#0369a1;font-size:.74rem;font-weight:700;border-radius:999px;padding:.2rem .6rem}
+  .bairro a{color:#0077B6;font-weight:700;font-size:.85rem;text-decoration:none;display:inline-block;margin-top:.5rem}
+  .dica{margin-top:1.2rem;background:#ecfeff;border:1px solid #67e8f9;border-radius:12px;padding:1rem;font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="https://praia.digital/">🏖️ Praia Digital</a>
+  <a href="https://praia.digital/guia-litoral">← Guia do Litoral</a>
+</header>
+<main>
+  <div class="card">
+    <h1>🏘️ Guia de Bairros</h1>
+    <p class="sub">Escolha a cidade e explore bairro por bairro.</p>
+    <label>Cidade</label>
+    <select id="cidade" onchange="render()"></select>
+    <div id="lista"></div>
+    <div class="dica">📏 Compare preços no <a href="https://praia.digital/avaliador-imoveis/comparador-bairros/" style="color:#0077B6;font-weight:700">Comparador de Bairros</a> · ⏳ <a href="https://praia.digital/guia-litoral/linha-do-tempo/" style="color:#0077B6;font-weight:700">Linha do Tempo</a></div>
+  </div>
+</main>
+<script>
+var dados={
+  'Santos':[
+    ['Gonzaga',9800,'O coração da orla: comércio, restaurantes e a vida urbana mais completa.',['Urbano','Família','Serviços']],
+    ['Boqueirão',9200,'Praia + boemia: bares, cafés e o mercado mais líquido de Santos.',['Urbano','Jovens']],
+    ['Ponta da Praia',5400,'Mais acessível, perto do porto e do ferry para Guarujá.',['Custo-benefício']]
+  ],
+  'Guarujá':[
+    ['Pitangueiras',8900,'Centro com vista mar: o endereço clássico do Guarujá.',['Urbano','Vista mar']],
+    ['Enseada',7200,'A praia das famílias: extensa, calma e completa.',['Família','Temporada']],
+    ['Pernambuco',11500,'O bairro premium: surf, condomínios e alto padrão.',['Luxo','Surf']]
+  ],
+  'Praia Grande':[
+    ['Vila Tupi',5800,'Orla revitalizada, metrô futuro e o melhor custo da região central.',['Custo-benefício','Família']],
+    ['Guilhermina',6200,'Jovem e movimentada, perto de tudo.',['Jovens','Temporada']],
+    ['Balneário Flórida',4900,'Tranquilo e barato — porta de entrada para o primeiro imóvel.',['Custo-benefício','Calmo']]
+  ],
+  'Bertioga':[
+    ['Riviera de São Lourenço',12400,'Condomínio-planejado referência em valorização no litoral.',['Luxo','Família','Investir']],
+    ['Indaiá',6900,'Próximo ao centro e às balsas, bom custo.',['Família']],
+    ['Vista Linda',5800,'Casas em ruas arborizadas, perfil residencial.',['Calmo','Custo-benefício']]
+  ]
+};
+var sel=document.getElementById('cidade');
+Object.keys(dados).forEach(function(c){sel.add(new Option(c,c))});
+function render(){
+  document.getElementById('lista').innerHTML=dados[sel.value].map(function(b){
+    return '<div class="bairro"><h3>'+b[0]+' <span class="m2">R$ '+b[1].toLocaleString('pt-BR')+'/m²</span></h3><p>'+b[2]+'</p><div class="tags">'+b[3].map(function(t){return '<span class="tag">'+t+'</span>'}).join('')+'</div><a href="https://praia.digital/avaliador-imoveis">Avaliar imóvel aqui →</a></div>';
+  }).join('');
+}
+render();
+</script>
+</body>
+</html>
